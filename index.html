@@ -65,7 +65,7 @@
       });
     }
 
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR8_tIK1VkicYuwADRDSKgZ80kqhMuG6R853PvnU1DaoalV5SwUMh0U4mZX4J95t44R8OpOBcHZG8YF/pub?output=csv')
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR8_tIK1VkicYuwADRDSKgZ80kqhMuG6R853PvnU1DaoalV5SwUMh0U4mZX4J95t44R8OpOBcHZG8YF/pub?output=csv&nocache=' + new Date().getTime())
       .then(response => response.text())
       .then(csv => {
         const stories = csvToJson(csv);
