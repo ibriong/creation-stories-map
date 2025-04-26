@@ -1,135 +1,119 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="utf-8" />
+  <title>Creation Stories Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; display: flex; }
+    #map { flex: 1; height: 100vh; }
+    #sidebar {
+      width: 300px;
+      max-width: 100%;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+    }
+    .popup-content { font-size: 14px; line-height: 1.4; }
+    .popup-title { font-weight: bold; font-size: 16px; }
+    .popup-culture { font-style: italic; margin-bottom: 5px; }
+    #sidebar-close {
+      align-self: flex-end;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Creation Stories Map&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { margin: 0; padding: 0; display: flex; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#map { flex: 1; height: 100vh; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#sidebar {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 300px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 0 10px rgba(0,0,0,0.3);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow-y: auto;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.popup-content { font-size: 14px; line-height: 1.4; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.popup-title { font-weight: bold; font-size: 16px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.popup-culture { font-style: italic; margin-bottom: 5px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#sidebar-close {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-self: flex-end;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 18px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="map"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="sidebar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="sidebar-close"&gt;&amp;times;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="sidebar-content"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const myMap = L.map('map').setView([20, 0], 2);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>attribution: '&amp;copy; OpenStreetMap contributors'</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}).addTo(myMap);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sidebar = document.getElementById('sidebar');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sidebarContent = document.getElementById('sidebar-content');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sidebarClose = document.getElementById('sidebar-close');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>sidebarClose.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>sidebar.style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function csvToJson(csv) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const lines = csv.split('\\n');</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const headers = lines[0].split(',');</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return lines.slice(1).filter(line =&gt; line.trim()).map(line =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const data = line.split(',');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return headers.reduce((obj, header, i) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>obj[header.trim()] = data[i] ? data[i].trim() : '';</p>
-<p class="p1"><span class="Apple-converted-space">          </span>return obj;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}, {});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR8_tIK1VkicYuwADRDSKgZ80kqhMuG6R853PvnU1DaoalV5SwUMh0U4mZX4J95t44R8OpOBcHZG8YF/pub?output=csv')</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.then(response =&gt; response.text())</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.then(csv =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const stories = csvToJson(csv);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>stories.forEach(story =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const lat = parseFloat(story.Latitude);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const lng = parseFloat(story.Longitude);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (isNaN(lat) || isNaN(lng)) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>const popupContent = `</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="popup-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="popup-title"&gt;${story.Title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="popup-culture"&gt;${story.Culture}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;${story.Summary}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;a href="#" class="read-more"</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>data-title="${story.Title}"</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>data-culture="${story.Culture}"</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>data-summary="${story.Summary}"</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>data-source="${story.Source}"</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>data-image="${story.ImageURL}"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                 </span>Read more</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>L.marker([lat, lng])</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.addTo(myMap)</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.bindPopup(popupContent);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('click', function(event) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (event.target.classList.contains('read-more')) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>event.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const title = event.target.getAttribute('data-title');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const culture = event.target.getAttribute('data-culture');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const summary = event.target.getAttribute('data-summary');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const source = event.target.getAttribute('data-source');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const image = event.target.getAttribute('data-image');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>sidebarContent.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h2&gt;${title}&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;h4 style="font-style: italic;"&gt;${culture}&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p&gt;${summary}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>${image ? `&lt;img src="${image}" alt="${title}" style="max-width:100%;margin:10px 0;"&gt;` : ''}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p&gt;&lt;a href="${source}" target="_blank"&gt;Read more at source&lt;/a&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>sidebar.style.display = 'flex';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div id="map"></div>
+  <div id="sidebar">
+    <div id="sidebar-close">&times;</div>
+    <div id="sidebar-content"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const myMap = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(myMap);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarContent = document.getElementById('sidebar-content');
+    const sidebarClose = document.getElementById('sidebar-close');
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.style.display = 'none';
+    });
+
+    function csvToJson(csv) {
+      const lines = csv.split('\\n');
+      const headers = lines[0].split(',');
+      return lines.slice(1).filter(line => line.trim()).map(line => {
+        const data = line.split(',');
+        return headers.reduce((obj, header, i) => {
+          obj[header.trim()] = data[i] ? data[i].trim() : '';
+          return obj;
+        }, {});
+      });
+    }
+
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR8_tIK1VkicYuwADRDSKgZ80kqhMuG6R853PvnU1DaoalV5SwUMh0U4mZX4J95t44R8OpOBcHZG8YF/pub?output=csv')
+      .then(response => response.text())
+      .then(csv => {
+        const stories = csvToJson(csv);
+        stories.forEach(story => {
+          const lat = parseFloat(story.Latitude);
+          const lng = parseFloat(story.Longitude);
+          if (isNaN(lat) || isNaN(lng)) return;
+
+          const popupContent = `
+            <div class="popup-content">
+              <div class="popup-title">${story.Title}</div>
+              <div class="popup-culture">${story.Culture}</div>
+              <div>${story.Summary}</div>
+              <a href="#" class="read-more"
+                 data-title="${story.Title}"
+                 data-culture="${story.Culture}"
+                 data-summary="${story.Summary}"
+                 data-source="${story.Source}"
+                 data-image="${story.ImageURL}">
+                 Read more
+              </a>
+            </div>`;
+
+          L.marker([lat, lng])
+            .addTo(myMap)
+            .bindPopup(popupContent);
+        });
+      });
+
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('read-more')) {
+        event.preventDefault();
+        const title = event.target.getAttribute('data-title');
+        const culture = event.target.getAttribute('data-culture');
+        const summary = event.target.getAttribute('data-summary');
+        const source = event.target.getAttribute('data-source');
+        const image = event.target.getAttribute('data-image');
+
+        sidebarContent.innerHTML = `
+          <h2>${title}</h2>
+          <h4 style="font-style: italic;">${culture}</h4>
+          <p>${summary}</p>
+          ${image ? `<img src="${image}" alt="${title}" style="max-width:100%;margin:10px 0;">` : ''}
+          <p><a href="${source}" target="_blank">Read more at source</a></p>
+        `;
+        sidebar.style.display = 'flex';
+      }
+    });
+  </script>
 </body>
 </html>
