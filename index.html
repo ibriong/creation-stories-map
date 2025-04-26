@@ -42,7 +42,7 @@
   <script>
     const myMap = L.map('map').setView([20, 0], 2);
 
-    L.'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a> contributors &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: 'abcd',
       maxZoom: 19
@@ -62,7 +62,7 @@
         const parsed = Papa.parse(csvText, { header: true });
         const stories = parsed.data;
 
-        console.log(stories); // See parsed stories if you want
+        console.log(stories); // See parsed stories (optional)
 
         stories.forEach(story => {
           const lat = parseFloat(story.Latitude);
