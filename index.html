@@ -54,24 +54,14 @@
       sidebar.style.display = 'none';
     });
 
-    function csvToJson(csv) {
-      const lines = csv.split('\\n');
-      const headers = lines[0].split(',');
-      return lines.slice(1).filter(line => line.trim()).map(line => {
-        const data = line.split(',');
-        return headers.reduce((obj, header, i) => {
-          obj[header.trim()] = data[i] ? data[i].trim() : '';
-          return obj;
-        }, {});
-      });
-    }
-
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR8_tIK1VkicYuwADRDSKgZ80kqhMuG6R853PvnU1DaoalV5SwUMh0U4mZX4J95t44R8OpOBcHZG8YF/pub?output=csv&nocache=' + new Date().getTime())
       .then(response => response.text())
-      .then(csv => {
+      .then(csvText => {
         const parsed = Papa.parse(csvText, { header: true });
         const stories = parsed.data;
-        console.log(stories);
+
+        console.log(stories); // Optional: Check parsed data
+
         stories.forEach(story => {
           const lat = parseFloat(story.Latitude);
           const lng = parseFloat(story.Longitude);
