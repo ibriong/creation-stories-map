@@ -60,7 +60,7 @@
         const parsed = Papa.parse(csvText, { header: true });
         const stories = parsed.data;
 
-        console.log(stories); // Optional: Check parsed data
+        console.log(stories); // See parsed stories if you want
 
         stories.forEach(story => {
           const lat = parseFloat(story.Latitude);
